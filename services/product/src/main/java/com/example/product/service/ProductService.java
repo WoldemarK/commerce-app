@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -21,41 +22,32 @@ public class ProductService {
     private final ProductMapper mapper;
     private final ProductRepository repository;
 
-    public Integer createProduct(ProductRequest request) {
-        Product product = mapper.toProduct(request);
-        return repository.save(product)
-                .getId();
+    public Integer createProduct(final ProductRequest request) {
+        final Product product = this.repository.save(this.mapper.toProduct(request));
+        return product.getId();
     }
 
     public ProductResponse findById(Integer id) {
-        return repository.findById(id)
-                .map(mapper::toProductResponse)
+        return this.repository.findById(id)
+                .map(this.mapper::toProductResponse)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with ID:: " + id));
     }
 
     public List<ProductResponse> findAll() {
-        return repository.findAll()
+        return this.repository.findAll()
                 .stream()
-                .map(mapper::toProductResponse)
+                .map(this.mapper::toProductResponse)
                 .collect(Collectors.toList());
     }
 
     @Transactional(rollbackFor = ProductPurchaseException.class)
-    public List<ProductPurchaseResponse> purchaseProducts(List<ProductPurchaseRequest> request) throws ProductPurchaseException {
+    public List<ProductPurchaseResponse> purchaseProducts(final List<ProductPurchaseRequest> request) throws ProductPurchaseException {
 
-        List<Integer> productIds = request
-                .stream()
+        List<Product> storedProducts = this.repository.findAllByIdInOrderById(request.stream()
                 .map(ProductPurchaseRequest::productId)
-                .toList();
+                .toList());
 
-        List<Product> storedProducts = repository.findAllByIdInOrderById(productIds);
-
-        if (productIds.size() != storedProducts.size()) {
-            throw new ProductPurchaseException("One or more products does not exist");
-        }
-
-        List<ProductPurchaseRequest> sortedRequest = request
-                .stream()
+        List<ProductPurchaseRequest> sortedRequest = request.stream()
                 .sorted(Comparator.comparing(ProductPurchaseRequest::productId))
                 .toList();
 
@@ -66,13 +58,13 @@ public class ProductService {
             ProductPurchaseRequest productRequest = sortedRequest.get(i);
 
             if (product.getAvailableQuantity() < productRequest.quantity()) {
-                throw new ProductPurchaseException("Insufficient stock quantity for product with ID:: "
-                        + productRequest.productId());
+                throw new ProductPurchaseException(MessageFormat.format(
+                        "Insufficient stock quantity for product with ID:: {0}", productRequest.productId()));
             }
             double newAvailableQuantity = product.getAvailableQuantity() - productRequest.quantity();
             product.setAvailableQuantity(newAvailableQuantity);
-            repository.save(product);
-            purchasedProducts.add(mapper.toproductPurchaseResponse(product, productRequest.quantity()));
+            this.repository.save(product);
+            purchasedProducts.add(this.mapper.toproductPurchaseResponse(product, productRequest.quantity()));
         }
         return purchasedProducts;
     }
