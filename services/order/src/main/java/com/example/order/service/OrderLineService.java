@@ -20,7 +20,8 @@ public class OrderLineService {
 
     public Integer saveOrderLine(OrderLineRequest request) {
         OrderLine order = mapper.toOrderLine(request);
-        return repository.save(order).getId();
+        return repository.save(order)
+                .getId();
     }
 
     public List<OrderLineResponse> findAllByOrderId(Integer orderId) {
