@@ -1,2 +1,11 @@
-package com.example.order.exception;public class BusinessException {
+package com.example.order.exception;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class BusinessException extends RuntimeException {
+
+    private final String message;
 }

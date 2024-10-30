@@ -1,6 +1,5 @@
-package com.example.order.model.orderline;
+package com.example.order.model;
 
-import com.example.order.model.Order;
 import jakarta.persistence.*;
 import lombok.*;
 

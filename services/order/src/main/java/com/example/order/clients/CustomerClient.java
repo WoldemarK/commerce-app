@@ -1,4 +1,4 @@
-package com.example.order.customer;
+package com.example.order.clients;
 
 import com.example.order.model.CustomerResponse;
 import org.springframework.cloud.openfeign.FeignClient;

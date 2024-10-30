@@ -9,10 +9,11 @@
         <outputRelativeToContentRoot value="true" />
         <module name="config-server" />
         <module name="product" />
+        <module name="discovery" />
         <module name="payment" />
         <module name="gateway" />
-        <module name="discovery" />
         <module name="customer" />
+        <module name="order" />
       </profile>
     </annotationProcessing>
   </component>
@@ -22,6 +23,7 @@
       <module name="customer" options="-parameters" />
       <module name="discovery" options="-parameters" />
       <module name="gateway" options="-parameters" />
+      <module name="order" options="-parameters" />
       <module name="payment" options="-parameters" />
       <module name="product" options="-parameters" />
     </option>

@@ -1,2 +1,8 @@
-package com.example.order.model;public record OrderLineResponse() {
+package com.example.order.model;
+
+public record OrderLineResponse
+        (
+                Integer id,
+                double quantity
+        ) {
 }

@@ -1,2 +1,16 @@
-package com.example.order.model;public record OrderResponse() {
+package com.example.order.model;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import java.math.BigDecimal;
+
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public record OrderResponse
+        (
+                Integer id,
+                String reference,
+                BigDecimal amount,
+                PaymentMethod paymentMethod,
+                String customerI
+        ) {
 }
