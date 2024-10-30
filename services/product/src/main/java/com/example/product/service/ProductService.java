@@ -43,9 +43,13 @@ public class ProductService {
     @Transactional(rollbackFor = ProductPurchaseException.class)
     public List<ProductPurchaseResponse> purchaseProducts(final List<ProductPurchaseRequest> request) throws ProductPurchaseException {
 
-        List<Product> storedProducts = this.repository.findAllByIdInOrderById(request.stream()
-                .map(ProductPurchaseRequest::productId)
-                .toList());
+        List<Integer> productIds = request.stream().map(ProductPurchaseRequest::productId).toList();
+
+        List<Product> storedProducts = this.repository.findAllByIdInOrderById(productIds);
+
+        if (productIds.size() != storedProducts.size()) {
+            throw new ProductPurchaseException("One or more products does not exist");
+        }
 
         List<ProductPurchaseRequest> sortedRequest = request.stream()
                 .sorted(Comparator.comparing(ProductPurchaseRequest::productId))
