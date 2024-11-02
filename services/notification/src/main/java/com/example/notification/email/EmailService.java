@@ -36,7 +36,7 @@ public class EmailService {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage,
                 MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, UTF_8.name());
-        messageHelper.setFrom("contact@aliboucoding.com");
+        messageHelper.setFrom("test-user@.user.com");
 
         final String templateName = PAYMENT_CONFIRMATION.getTemplate();
 
@@ -49,6 +49,15 @@ public class EmailService {
         context.setVariables(variables);
         messageHelper.setSubject(PAYMENT_CONFIRMATION.getSubject());
 
+        send(destinationEmail, mimeMessage, messageHelper, templateName, context);
+
+    }
+
+    private void send(String destinationEmail,
+                      MimeMessage mimeMessage,
+                      MimeMessageHelper messageHelper,
+                      String templateName,
+                      Context context) {
         try {
             String htmlTemplate = templateEngine.process(templateName, context);
             messageHelper.setText(htmlTemplate, true);
@@ -59,7 +68,6 @@ public class EmailService {
         } catch (MessagingException e) {
             log.warn("WARNING - Cannot send Email to {} ", destinationEmail);
         }
-
     }
 
     @Async
@@ -83,16 +91,7 @@ public class EmailService {
         context.setVariables(variables);
         messageHelper.setSubject(ORDER_CONFIRMATION.getSubject());
 
-        try {
-            String htmlTemplate = templateEngine.process(templateName, context);
-            messageHelper.setText(htmlTemplate, true);
-
-            messageHelper.setTo(destinationEmail);
-            mailSender.send(mimeMessage);
-            log.info(String.format("INFO - Email successfully sent to %s with template %s ", destinationEmail, templateName));
-        } catch (MessagingException e) {
-            log.warn("WARNING - Cannot send Email to {} ", destinationEmail);
-        }
+        send(destinationEmail, mimeMessage, messageHelper, templateName, context);
 
     }
 }
