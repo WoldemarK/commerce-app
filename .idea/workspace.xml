@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="70438c2a-4682-4d7a-ace6-ba678aadb5c4" name="Changes" comment="added a new microservice Notification" />
+    <list default="true" id="70438c2a-4682-4d7a-ace6-ba678aadb5c4" name="Changes" comment="added a new microservice Notification">
+      <change beforePath="$PROJECT_DIR$/services/notification/src/main/java/com/example/notification/email/EmailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/notification/src/main/java/com/example/notification/email/EmailService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/notification/src/main/java/com/example/notification/kafka/NotificationsConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/notification/src/main/java/com/example/notification/kafka/NotificationsConsumer.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -191,7 +194,7 @@
       <workItem from="1730220820121" duration="37963000" />
       <workItem from="1730319169502" duration="1341000" />
       <workItem from="1730551299526" duration="862000" />
-      <workItem from="1730572854155" duration="4720000" />
+      <workItem from="1730572854155" duration="5369000" />
     </task>
     <servers />
   </component>
